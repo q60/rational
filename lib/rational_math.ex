@@ -7,9 +7,9 @@ defprotocol RationalMath do
 end
 
 defimpl RationalMath, for: [Rational, Integer, Float] do
-  def a + b, do: Rational.rat_op(a, b, :+)
-  def a - b, do: Rational.rat_op(a, b, :-)
-  def a * b, do: Rational.rat_op(a, b, :*)
-  def a / b, do: Rational.rat_op(a, b, :/)
-  def a ** b, do: Rational.rat_op(a, b, :**)
+  def a + b, do: Rational.op(a, b, :+)
+  def a - b, do: Rational.op(a, b, :-)
+  def a * b, do: Rational.op(a, b, :*)
+  def a / b, do: Rational.op(a, b, :/)
+  def a ** b, do: Rational.op(a, b, :**)
 end
