@@ -2,7 +2,7 @@ defmodule Rational do
   @moduledoc """
   Elixir library implementing rational numbers and math.
 
-  The library adds new type of `t:rational/0` numbers and basic math. Rationals can also interact with integers and floats. Actually this library expands existing functions, so they can work with rationals too. Number operations available:
+  The library adds new type of `t:rational/0` numbers and basic math operations for them. Rationals can also interact with integers and floats. Actually this library expands existing functions, so they can work with rationals too. Number operations available:
 
   * addition
   * subtraction
