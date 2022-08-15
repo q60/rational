@@ -13,7 +13,7 @@ defmodule Rational do
   ## Some examples
 
       iex> use Rational
-      Kernel
+      Rational
 
       iex> ~n(2/12)
       2.0/12.0
@@ -34,9 +34,9 @@ defmodule Rational do
 
   defmacro __using__(_opts) do
     quote do
-      import Rational
-      import RationalMath
       import Kernel, except: [+: 2, -: 2, *: 2, /: 2, **: 2]
+      import RationalMath
+      import Rational
     end
   end
 
@@ -96,14 +96,30 @@ defmodule Rational do
   @spec sigil_n(String.t(), list()) :: rational()
   def sigil_n(string, _modifiers), do: parse(string)
 
-  defp gcd(a, 0), do: abs(a)
-  defp gcd(a, b), do: gcd(b, rem(a, b))
+  @doc """
+  Compares two rationals.
+
+  Returns `:gt` if first rational is greater than the second and `:lt` for vice versa. If the two rationals are equal `:eq` is returned.
+  """
+  @spec compare(rational(), rational()) :: :lt | :eq | :gt
+  def compare(a, b) do
+	  case {a.num / a.denom, b.num / b.denom} do
+	    {first, second} when first > second ->
+        :gt
+
+	    {first, second} when first < second ->
+        :lt
+
+      _ ->
+        :eq
+    end
+  end
 
   @spec op(number(), number(), operator()) :: number()
   def op(a, b, op) when is_number(a) and is_number(b) do
     {res, _} =
-      [a, op, b]
-      |> Enum.join()
+      [inspect(a), op, inspect(b)]
+      |> Enum.join(" ")
       |> Code.eval_string()
 
     res
@@ -171,6 +187,9 @@ defmodule Rational do
     end
     |> result()
   end
+
+  defp gcd(a, 0), do: abs(a)
+  defp gcd(a, b), do: gcd(b, rem(a, b))
 
   defp result({num, denom}) when num < 0 and denom < 0, do: result({abs(num), abs(denom)})
 

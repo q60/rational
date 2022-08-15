@@ -18,7 +18,7 @@ qrational is [available in Hex](https://hex.pm/packages/qrational) and can be in
 ```elixir
 def deps do
   [
-    {:rational, "~> 1.1", hex: :qrational}
+    {:rational, "~> 1.2", hex: :qrational}
   ]
 end
 ```
