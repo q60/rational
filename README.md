@@ -23,4 +23,4 @@ def deps do
 end
 ```
 
-The docs can be found at <https://hexdocs.pm/rational>.
+The docs can be found at <https://hexdocs.pm/qrational>.
