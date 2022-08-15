@@ -4,13 +4,12 @@ defmodule Rational.MixProject do
   def project do
     [
       app: :rational,
-      version: "1.0.2",
+      version: "1.1.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
       deps: deps(),
-
       name: "qrational",
       source_url: "https://github.com/q60/rational",
       docs: [
@@ -21,11 +20,11 @@ defmodule Rational.MixProject do
   end
 
   defp description() do
-	  "Elixir library implementing rational numbers and math."
+    "Elixir library implementing rational numbers and math."
   end
 
   defp package() do
-	  [
+    [
       name: "qrational",
       licenses: ["MIT"],
       links: %{

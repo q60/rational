@@ -49,19 +49,40 @@ defmodule Rational do
 
   Allowed in guard tests.
   """
-  @spec is_rational(term()) :: boolean()
-  defmacro is_rational(term) do
-    quote do
-      is_struct(unquote(term)) and
-        :erlang.is_map_key(:num, unquote(term)) and
-        :erlang.is_map_key(:denom, unquote(term))
+  defguard is_rational(term) when is_struct(term, Rational)
+
+  @doc """
+  Parses a string into a rational.
+
+  If successful, returns either a `t:rational/0` or `t:number/0`; otherwise returns `:error`.
+  """
+  @spec parse(String.t()) :: rational() | number() | :error
+  def parse(string) do
+    if String.trim(string) =~ ~r/\s/ do
+      :error
+    else
+      case String.split(string, "/") do
+        [a, b] ->
+          parsed = Enum.map([a, b], &Float.parse/1)
+
+          if :error in parsed do
+            :error
+          else
+            [{num, _}, {denom, _}] = parsed
+
+            result({num, denom})
+          end
+
+        _ ->
+          :error
+      end
     end
   end
 
   @doc """
   Handles the sigil `~n` for rationals.
 
-  It returns a `t:rational/0` number.
+  It returns a `t:rational/0` or `t:number/0`.
 
   ## Examples
 
@@ -73,16 +94,7 @@ defmodule Rational do
 
   """
   @spec sigil_n(String.t(), list()) :: rational()
-  def sigil_n(string, _) do
-    [a, b] =
-      String.split(string, "/")
-      |> Enum.map(fn x ->
-        {i, _} = Float.parse(x)
-        i
-      end)
-
-    %Rational{num: a, denom: b}
-  end
+  def sigil_n(string, _modifiers), do: parse(string)
 
   defp gcd(a, 0), do: abs(a)
   defp gcd(a, b), do: gcd(b, rem(a, b))
@@ -159,6 +171,8 @@ defmodule Rational do
     end
     |> result()
   end
+
+  defp result({num, denom}) when num < 0 and denom < 0, do: result({abs(num), abs(denom)})
 
   defp result({num, denom}) do
     cond do
