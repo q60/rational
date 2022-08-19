@@ -8,6 +8,7 @@ defprotocol RationalMath do
   def a * b
   def a / b
   def a ** b
+  def abs(a)
 end
 
 defimpl RationalMath, for: [Rational, Integer, Float] do
@@ -16,4 +17,5 @@ defimpl RationalMath, for: [Rational, Integer, Float] do
   def a * b, do: Rational.op(a, b, :*)
   def a / b, do: Rational.op(a, b, :/)
   def a ** b, do: Rational.op(a, b, :**)
+  def abs(a), do: Rational.op(a, :abs)
 end

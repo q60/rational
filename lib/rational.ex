@@ -16,7 +16,7 @@ defmodule Rational do
       Rational
 
       iex> ~n(2/12)
-      2.0/12.0
+      1/6
 
       iex> ~n(1/4) * ~n(2/3)
       1/6
@@ -34,9 +34,9 @@ defmodule Rational do
 
   defmacro __using__(_opts) do
     quote do
-      import Kernel, except: [+: 2, -: 2, *: 2, /: 2, **: 2]
+      import Kernel, except: [+: 2, -: 2, *: 2, /: 2, **: 2, abs: 1]
       import RationalMath
-      import Rational
+      import Rational, only: [sigil_n: 2, parse: 1, compare: 2]
     end
   end
 
@@ -115,6 +115,7 @@ defmodule Rational do
     end
   end
 
+  @doc false
   @spec op(number(), number(), operator()) :: number()
   def op(a, b, op) when is_number(a) and is_number(b) do
     {res, _} =
@@ -187,6 +188,9 @@ defmodule Rational do
     end
     |> result()
   end
+
+  def op(a, :abs) when is_rational(a), do: %Rational{num: abs(a.num), denom: abs(a.denom)}
+  def op(a, :abs) when is_number(a),do: abs(a)
 
   defp gcd(a, 0), do: abs(a)
   defp gcd(a, b), do: gcd(b, rem(a, b))
