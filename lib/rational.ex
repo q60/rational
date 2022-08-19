@@ -9,6 +9,7 @@ defmodule Rational do
   * multiplication
   * division
   * power
+  * absolute value
 
   ## Some examples
 
@@ -36,13 +37,15 @@ defmodule Rational do
     quote do
       import Kernel, except: [+: 2, -: 2, *: 2, /: 2, **: 2, abs: 1]
       import RationalMath
-      import Rational, only: [sigil_n: 2, parse: 1, compare: 2]
+      import Rational, only: [is_rational: 1, sigil_n: 2, parse: 1, compare: 2]
     end
   end
 
-  @type rational() :: %Rational{num: number(), denom: number()}
-  @type operator() :: :+ | :- | :* | :/ | :**
   defstruct [:num, :denom]
+
+  @type rational() :: %Rational{num: number(), denom: number()}
+  @typedoc false
+  @type operator() :: :+ | :- | :* | :/ | :**
 
   @doc """
   Returns `true` if `term` is a rational, otherwise returns `false`.
@@ -103,11 +106,11 @@ defmodule Rational do
   """
   @spec compare(rational(), rational()) :: :lt | :eq | :gt
   def compare(a, b) do
-	  case {a.num / a.denom, b.num / b.denom} do
-	    {first, second} when first > second ->
+    case {a.num / a.denom, b.num / b.denom} do
+      {first, second} when first > second ->
         :gt
 
-	    {first, second} when first < second ->
+      {first, second} when first < second ->
         :lt
 
       _ ->
@@ -189,8 +192,11 @@ defmodule Rational do
     |> result()
   end
 
+  @doc false
+  @spec op(rational(), :abs) :: rational()
   def op(a, :abs) when is_rational(a), do: %Rational{num: abs(a.num), denom: abs(a.denom)}
-  def op(a, :abs) when is_number(a),do: abs(a)
+  @spec op(number(), :abs) :: number()
+  def op(a, :abs) when is_number(a), do: abs(a)
 
   defp gcd(a, 0), do: abs(a)
   defp gcd(a, b), do: gcd(b, rem(a, b))
