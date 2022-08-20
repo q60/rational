@@ -57,7 +57,7 @@ defmodule Rational do
   @doc """
   Parses a string into a rational.
 
-  If successful, returns either a `t:rational/0` or `t:number/0`; otherwise returns `:error`.
+  If successful, returns either a `t:rational/0` or `t:number/0`; otherwise returns `:error`, raises `ArithmeticError` if denominator is zero.
 
   ## Examples
 
@@ -71,7 +71,7 @@ defmodule Rational do
       :error
 
   """
-  @spec parse(String.t()) :: rational() | number() | :error
+  @spec parse(String.t()) :: rational() | number() | :error | no_return()
   def parse(string) do
     if String.trim(string) =~ ~r/\s/ do
       :error
@@ -85,7 +85,11 @@ defmodule Rational do
           else
             [{num, _}, {denom, _}] = parsed
 
-            result({num, denom})
+            if denom == 0 do
+              raise ArithmeticError
+            else
+              result({num, denom})
+            end
           end
 
         _ ->

@@ -10,6 +10,7 @@ The library adds new type of rational numbers and basic math operations for them
 * multiplication
 * division
 * power
+* absolute value
 
 ## Installation
 
@@ -18,7 +19,7 @@ qrational is [available in Hex](https://hex.pm/packages/qrational) and can be in
 ```elixir
 def deps do
   [
-    {:rational, "~> 1.2", hex: :qrational}
+    {:rational, "1.3.2", hex: :qrational}
   ]
 end
 ```
