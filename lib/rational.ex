@@ -58,6 +58,18 @@ defmodule Rational do
   Parses a string into a rational.
 
   If successful, returns either a `t:rational/0` or `t:number/0`; otherwise returns `:error`.
+
+  ## Examples
+
+      iex> Rational.parse "22/4"
+      11/2
+
+      iex> Rational.parse "13/-16"
+      13/-16
+
+      iex> Rational.parse "42"
+      :error
+
   """
   @spec parse(String.t()) :: rational() | number() | :error
   def parse(string) do
@@ -90,7 +102,7 @@ defmodule Rational do
   ## Examples
 
       iex> ~n(1/4)
-      1.0/4.0
+      1/4
 
       iex> ~n(-3.1/5)
       -3.1/5.0
@@ -103,6 +115,15 @@ defmodule Rational do
   Compares two rationals.
 
   Returns `:gt` if first rational is greater than the second and `:lt` for vice versa. If the two rationals are equal `:eq` is returned.
+
+  ## Examples
+
+      iex> Rational.compare ~n(1/3), ~n(12/13)
+      :lt
+
+      iex> Rational.compare ~n(13/14), ~n(12/13)
+      :gt
+
   """
   @spec compare(rational(), rational()) :: :lt | :eq | :gt
   def compare(a, b) do
