@@ -9,7 +9,7 @@ The library adds new type of rational numbers and basic math operations for them
 * subtraction
 * multiplication
 * division
-* power
+* exponentiation
 * absolute value
 
 ## Installation

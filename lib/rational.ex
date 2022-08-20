@@ -8,7 +8,7 @@ defmodule Rational do
   * subtraction
   * multiplication
   * division
-  * power
+  * exponentiation
   * absolute value
 
   ## Some examples
@@ -189,6 +189,9 @@ defmodule Rational do
 
       :/ ->
         {a.num, a.denom * b}
+
+      :** when b < 0 ->
+        {a.denom ** abs(b), a.num ** abs(b)}
 
       :** ->
         {a.num ** b, a.denom ** b}
